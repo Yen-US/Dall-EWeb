@@ -1,5 +1,7 @@
+import Token from './token';
 
 export class DallEClient {
+    Token = new Token();
     constructor() {
         this.host = 'https://api.openai.com/v1/images/generations'
     }
@@ -14,7 +16,7 @@ export class DallEClient {
         const rawResponse = await fetch(this.host, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization':'Bearer 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'
+                'Authorization': Token.getToken()
               },
             method: 'POST',
             body: JSON.stringify(data)

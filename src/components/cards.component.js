@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { DallEClient } from '../client/DallEClient';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import Alert from 'react-bootstrap/Alert';
+
 
 import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 
 export default class Cards extends Component {
     DallEClient = new DallEClient();
@@ -14,10 +16,13 @@ export default class Cards extends Component {
         super(props);
         this.state = {
             value: '',
-            imageURLs: []
+            imageURLs: [],
+            show: false,
+            counter: 3
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.target = null
     }
 
     componentDidMount() {
@@ -41,9 +46,19 @@ export default class Cards extends Component {
         console.log(this.state)
     }
 
-    componentDidUpdate(prevProps) {
-        console.log(this.state)
-        console.log(prevProps)
+    componentDidUpdate(prevProps, prevState) {
+    }
+
+    copyLink(url) {
+        this.setState({ show: true })
+        navigator.clipboard.writeText(url)
+        let intervalID = setInterval(() => this.state.counter > 0 ? this.setState({ counter: this.state.counter - 1 }) : this.resetCounter(intervalID), 1000);
+    }
+
+    resetCounter(intervalID) {
+        this.setState({ counter: 3 })
+        this.setState({ show: false })
+        clearInterval(intervalID);
     }
 
     render() {
@@ -55,7 +70,20 @@ export default class Cards extends Component {
                         <Card.Img variant="top" src={value.url} />
                         <Card.Body>
                             <Card.Title>Generated image {index + 1}</Card.Title>
-                            <Button variant="primary">Share</Button>
+
+
+                            <OverlayTrigger
+                                key='bottom'
+                                placement='bottom'
+                                overlay={
+                                    <Tooltip id={`tooltip-top`}>
+                                        Link <strong>Copied</strong>!
+                                    </Tooltip>
+                                }
+                                show={this.state.show}
+                            >
+                                <Button variant="primary" onClick={() => this.copyLink(value.url)}>Copy link</Button>
+                            </OverlayTrigger>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -64,12 +92,9 @@ export default class Cards extends Component {
         } else {
             cards =
                 <Col md="auto">
-                    <Card class="card border-warning mb-3 bg-transparent" border="dark" style={{ width: '50rem' }}>
-                        <Card.Body>
-                            <Card.Title>Please add your prompt and submit</Card.Title>
-                            <Button variant="primary">Share</Button>
-                        </Card.Body>
-                    </Card>
+                    <Alert key='success' variant='success'>
+                        You can select a prompt option and enter your prompt text above to generate beautiful images based on your amazing ideas!
+                    </Alert>
                 </Col>
 
         }

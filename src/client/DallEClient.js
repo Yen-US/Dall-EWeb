@@ -1,4 +1,4 @@
-import Token from './token';
+import { Token } from './Token';
 
 export class DallEClient {
     Token = new Token();
@@ -6,18 +6,18 @@ export class DallEClient {
         this.host = 'https://api.openai.com/v1/images/generations'
     }
 
-    async newImages() {
+    async newImages(prompt, number, poptionL) {
         var data = {
-            "prompt": "epic professional digital art of a big lego, best on artstation, cgsociety, wlop, Behance, pixiv, astonishing, impressive, outstanding, epic, cinematic, stunning, gorgeous, much detail, much wow, masterpiece",
-            "n": 1,
+            "prompt": poptionL[0] + prompt + poptionL[1],
+            "n": number,
             "size": "1024x1024"
-          }
+        }
 
         const rawResponse = await fetch(this.host, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': Token.getToken()
-              },
+                'Authorization': this.Token.getToken()
+            },
             method: 'POST',
             body: JSON.stringify(data)
         })
@@ -25,5 +25,5 @@ export class DallEClient {
         console.log(parsedResponse.data)
         return parsedResponse.data;
     }
-    
+
 }

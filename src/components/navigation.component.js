@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { BsDoorClosed } from "react-icons/bs";
 
 export default class Navigation extends Component {
 
@@ -16,7 +17,7 @@ export default class Navigation extends Component {
   render() {
     return (
       <div data-testid="Navigation">
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar bg="dark" variant="dark" expand="lg" >
           <Container>
             <Navbar.Brand href="#home">DallE Web</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -25,7 +26,7 @@ export default class Navigation extends Component {
               </Nav>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
-                Signed in as: <a href="#login">Test</a>
+                <BsDoorClosed/> <a> Test</a>
               </Navbar.Text>
             </Navbar.Collapse>
           </Container>

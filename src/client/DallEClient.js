@@ -6,11 +6,11 @@ export class DallEClient {
         this.host = 'https://api.openai.com/v1/images/generations'
     }
 
-    async newImages(prompt, number, poptionL) {
+    async newImages(prompt, number, poptionL, size) {
         var data = {
             "prompt": poptionL[0] + prompt + poptionL[1],
             "n": number,
-            "size": "1024x1024"
+            "size": size+"x"+size
         }
 
         const rawResponse = await fetch(this.host, {

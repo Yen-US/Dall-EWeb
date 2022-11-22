@@ -11,6 +11,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CardGroup from 'react-bootstrap/CardGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export default class Prompt extends Component {
     DallEClient = new DallEClient();
@@ -20,12 +21,14 @@ export default class Prompt extends Component {
         super(props);
         this.state = {
             valuePrompt: '',
-            valueRange: 5,
+            valueRange: 1,
             imageURLs: [],
             showModal: false,
-            promptOption: "",
+            promptOption: "Select one option",
             prompt: [],
-            promptOptionList: []
+            promptOptionList: [],
+            promptSelected: false,
+            size: 1024
         };
         this.handleChangePrompt = this.handleChangePrompt.bind(this);
         this.handleChangeRange = this.handleChangeRange.bind(this);
@@ -51,15 +54,15 @@ export default class Prompt extends Component {
     }
 
     async newImages(promptTxt, number) {
-        if (this.state.prompt) {
-            const newImages = await this.DallEClient.newImages(promptTxt, number,this.state.prompt);
+        if (this.state.promptSelected) {
+            const newImages = await this.DallEClient.newImages(promptTxt, number, this.state.prompt, this.state.size);
             this.setState({
                 imageURLs: newImages
             });
             this.props.imagesF(newImages)
             console.log(this.state)
-        }else{
-            
+        } else {
+            this.handleShowModal()
         }
 
     }
@@ -75,7 +78,12 @@ export default class Prompt extends Component {
         this.setState({ prompt: val.prompt })
         this.setState({ promptOption: val.name })
         this.handleCloseModal()
+        this.setState({ promptSelected: true })
 
+    }
+
+    setSize(sizeval){
+        this.setState({ size: sizeval })
     }
 
     render() {
@@ -96,7 +104,7 @@ export default class Prompt extends Component {
                         </Card.Body>
                         <Card.Footer>
                             {Array.from(value.keywords).map((value, index) =>
-                                <Badge bg="secondary ms-auto">{value}</Badge>
+                                <Badge className="badge mx-1" bg="secondary">{value}</Badge>
                             )}
                         </Card.Footer>
                     </Card>
@@ -121,15 +129,24 @@ export default class Prompt extends Component {
                                 aria-describedby="basic-addon2"
                                 value={this.state.value} onChange={this.handleChangePrompt}
                             />
-                            <Button variant="primary" onClick={this.handleShowModal}>
-                                Prompt Option
-                            </Button>
 
-                            <Button variant="outline-primary" disabled>
+                            <Button variant="outline-success" onClick={this.handleShowModal}>
                                 {this.state.promptOption}
                             </Button>
 
-                            <Button variant="success" id="button-addon2" type="submit" value="Submit">
+                            <Dropdown>
+                                <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                                    {this.state.size}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    <Dropdown.Item onClick={() => this.setSize(256)}>256</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setSize(512)}>512</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.setSize(1024)}>1024</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+
+                            <Button variant="outline-success" id="button-addon2" type="submit" value="Submit">
                                 Submit
                             </Button>
 
@@ -156,12 +173,7 @@ export default class Prompt extends Component {
 
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={this.handleCloseModal}>
-                                Close
-                            </Button>
-                            <Button variant="primary" onClick={this.handleCloseModal}>
-                                Save Changes
-                            </Button>
+                            <Badge bg="primary" >Click on the Use button</Badge>
                         </Modal.Footer>
                     </Modal>
                 </>

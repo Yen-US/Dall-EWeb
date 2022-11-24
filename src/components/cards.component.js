@@ -92,7 +92,7 @@ export default class Cards extends Component {
         } else {
             cards =
                 <Col md="auto">
-                    <Alert key='success' variant='success'>
+                    <Alert key='primary' variant='primary'>
                         You can select a prompt option and enter your prompt text above to generate beautiful images based on your amazing ideas!
                     </Alert>
                 </Col>

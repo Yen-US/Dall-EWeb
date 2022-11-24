@@ -24,11 +24,12 @@ export default class Prompt extends Component {
             valueRange: 1,
             imageURLs: [],
             showModal: false,
-            promptOption: "Select one option",
+            promptOption: "Select one",
             prompt: [],
             promptOptionList: [],
             promptSelected: false,
-            size: 1024
+            size: 256,
+            sizes:[256,512,1024]
         };
         this.handleChangePrompt = this.handleChangePrompt.bind(this);
         this.handleChangeRange = this.handleChangeRange.bind(this);
@@ -46,6 +47,7 @@ export default class Prompt extends Component {
 
     handleChangeRange(event) {
         this.setState({ valueRange: event.target.value / 10 });
+        event.preventDefault();
     }
 
     handleSubmit(event) {
@@ -66,6 +68,7 @@ export default class Prompt extends Component {
         }
 
     }
+
 
     componentDidUpdate(prevProps) {
         console.log(this.state)
@@ -130,30 +133,31 @@ export default class Prompt extends Component {
                                 value={this.state.value} onChange={this.handleChangePrompt}
                             />
 
-                            <Button variant="outline-success" onClick={this.handleShowModal}>
-                                {this.state.promptOption}
+                            <Button variant="outline-primary" onClick={this.handleShowModal}>
+                                Option: {this.state.promptOption}
                             </Button>
 
                             <Dropdown>
                                 <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                                    {this.state.size}
+                                    {this.state.size}px
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
-                                    <Dropdown.Item onClick={() => this.setSize(256)}>256</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.setSize(512)}>512</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.setSize(1024)}>1024</Dropdown.Item>
+                                    {Array.from(this.state.sizes).map((value) =>
+                                    <Dropdown.Item onClick={() => this.setSize(value)}>{value}px</Dropdown.Item>
+                                    )}
+                                    
                                 </Dropdown.Menu>
                             </Dropdown>
 
-                            <Button variant="outline-success" id="button-addon2" type="submit" value="Submit">
-                                Submit
+                            <Button variant="outline-primary" id="button-addon2" type="submit" value="Submit">
+                                Generate
                             </Button>
 
 
                         </InputGroup>
                         <InputGroup className="mt-4 mb-1" >
-                            <Form.Range step="10" min="10" max="100" onChange={this.handleChangeRange} />
+                            <Form.Range step="10" min="10" max="100" defaultValue={this.state.valueRange} onChange={this.handleChangeRange} />
 
                             <Form.Label variant="white"><Badge className="position-absolute top-0 start-50 translate-middle badge" bg="secondary"> {this.state.valueRange} </Badge></Form.Label>
                         </InputGroup>

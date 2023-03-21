@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { DallEClient } from '../client/DallEClient';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -15,7 +14,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 
 export default class Prompt extends Component {
-    DallEClient = new DallEClient();
+
     promptOption = new promptOption();
 
     constructor(props) {
@@ -61,7 +60,8 @@ export default class Prompt extends Component {
     async newImages(promptTxt, number) {
         if (this.state.promptSelected) {
             this.props.loadingF(true)
-            const newImages = await this.DallEClient.newImages(promptTxt, number, this.state.prompt, this.state.size);
+            const newImages = ''
+            //const newImages = await this.DallEClient.newImages(promptTxt, number, this.state.prompt, this.state.size);
             if (newImages.error) {
                 this.setState({
                     error: newImages.error,

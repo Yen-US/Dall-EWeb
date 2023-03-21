@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { DallEClient } from '../client/DallEClient';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -11,7 +10,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Col from 'react-bootstrap/Col';
 
 export default class Cards extends Component {
-    DallEClient = new DallEClient();
+
 
     constructor(props) {
         super(props);

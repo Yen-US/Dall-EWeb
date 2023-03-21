@@ -1,7 +1,6 @@
-import { Token } from './Token';
 
 export class DallEClient {
-    Token = new Token();
+    Token = process.env.TOKEN;
     constructor() {
         this.host = 'https://api.openai.com/v1/images/generations'
     }

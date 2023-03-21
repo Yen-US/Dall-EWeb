@@ -7,7 +7,12 @@ app.listen(3000, () => {
     console.log("Server running on port 3000");
 });
 
-app.get("/newImages", (req, res, next) => {
+app.get("/", (req, res, next) => {
+    res.json('Hi');
+});
+
+app.get("/newImages", async (req, res, next) => {
+    const hostDallE = 'https://api.openai.com/v1/images/generations'
     const prompt = req.headers['prompt'];
     const number = req.headers['number'];
     const poptionL = req.headers['poptionL'];
@@ -24,7 +29,7 @@ app.get("/newImages", (req, res, next) => {
     let errorb = false
     let errorMes = ''
 
-    fetch(this.host, {
+    await fetch(hostDallE, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': token

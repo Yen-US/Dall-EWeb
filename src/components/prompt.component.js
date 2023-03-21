@@ -14,7 +14,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 
 export default class Prompt extends Component {
-
+    
     promptOption = new promptOption();
 
     constructor(props) {
@@ -33,6 +33,7 @@ export default class Prompt extends Component {
             error:false,
             errorMessage:''
         };
+        this.hostAPI= "https://dall-e-mq8s9ni60-yen-us.vercel.app/api/app/newImages"
         this.handleChangePrompt = this.handleChangePrompt.bind(this);
         this.handleChangeRange = this.handleChangeRange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -59,8 +60,20 @@ export default class Prompt extends Component {
 
     async newImages(promptTxt, number) {
         if (this.state.promptSelected) {
-            this.props.loadingF(true)
             const newImages = ''
+            this.props.loadingF(true)
+            await fetch(this.hostAPI, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'prompt':promptTxt,
+                    'number':number,
+                    'poptionL':this.state.prompt,
+                    'size':this.state.size
+                },
+                method: 'GET',
+                body: JSON.stringify(data)
+            }).then((response) => newImages = response.json())
+            
             //const newImages = await this.DallEClient.newImages(promptTxt, number, this.state.prompt, this.state.size);
             if (newImages.error) {
                 this.setState({

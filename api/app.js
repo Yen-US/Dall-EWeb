@@ -1,11 +1,19 @@
+const cors = require('cors');
+
 require('dotenv').config();
 const token = process.env.TOKEN;
+
 
 var express = require("express");
 var app = express();
 app.listen(3000, () => {
     console.log("Server running on port 3000");
 });
+app.use(cors());
+
+app.use(cors({
+    origin: 'https://dall-e-lhimvf8n7-yen-us.vercel.app'
+  }));
 
 app.get("/", (req, res, next) => {
     res.json('Hi');

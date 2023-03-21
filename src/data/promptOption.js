@@ -24,14 +24,14 @@ export class promptOption {
                 prompt: ['Monumental old ruins tower of a dark misty ', ', overcast, sci-fi digital painting by Simon Simon Stålenhag'],
                 keywords: ['old', 'Monumental', 'tower', 'overcast', ' sci-fi', 'digital painting'],
                 description: 'Great to generate a dark place, as a prompt text use or describe a place, for example:"forest"',
-                image:'https://github.com/Yen-US/Dall-EWeb/blob/master/src/images/Photo.png?raw=true'
+                image:'https://github.com/Yen-US/Dall-EWeb/blob/master/src/images/Forest.png?raw=true'
             },
             {
                 name: 'Close photo',
                 prompt: ['photo of slim ', ', 20yo, close-up, high detail, studio, smoke, sharp, pink violet light, studio, 85mm sigma art lens'],
                 keywords: ['close-up', 'high detail', 'studio', 'smoke', ' sharp', 'studio','studio'],
                 description: 'Great to generate a close photo, as a prompt text use or describe a human, for example:"girl"',
-                image:'https://github.com/Yen-US/Dall-EWeb/blob/master/src/images/Photo.png?raw=true'
+                image:'https://github.com/Yen-US/Dall-EWeb/blob/master/src/images/closePhoto.png?raw=true'
             },
             {
                 name: 'Manual',

@@ -10,10 +10,15 @@ export class DallEClient {
         var data = {
             "prompt": poptionL[0] + prompt + poptionL[1],
             "n": number,
-            "size": size+"x"+size
+            "size": size + "x" + size
         }
 
-        const rawResponse = await fetch(this.host, {
+        let rawResponse = ""
+        let loading = false
+        let errorb = false
+        let errorMes = ''
+
+        await fetch(this.host, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': this.Token.getToken()
@@ -21,9 +26,29 @@ export class DallEClient {
             method: 'POST',
             body: JSON.stringify(data)
         })
+            .then((response) => rawResponse = response)
+            .then((response) => {
+                loading = false
+                if (!response.ok) throw Error(response);
+            })
+            .catch((error) => {
+                errorb = true
+                loading = false
+                console.log(error)
+                errorMes=parsedResponse.error.message
+            });
+
         const parsedResponse = await rawResponse.json();
-        console.log(parsedResponse.data)
-        return parsedResponse.data;
+
+        let response =
+        {
+            data: parsedResponse.data,
+            error: errorb,
+            errorM: errorMes,
+            loading: loading,
+        }
+
+        return response;
     }
 
 }

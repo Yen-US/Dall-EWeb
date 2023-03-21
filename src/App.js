@@ -8,12 +8,20 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Footer from './components/footer.component'
+import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
+
 
 export default class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { promptData: [] };
+    this.state = {
+      promptData: [],
+      loading: false,
+      error: false,
+      errorMessage: ''
+    };
     this.data = []
 
   }
@@ -23,11 +31,18 @@ export default class App extends Component {
 
   imagesF = (promptDatachild) => {
     this.setState({ promptData: promptDatachild })
-    console.log(this.state)
   }
 
+  loadingF = (promptDatachild) => {
+    this.setState({ loading: promptDatachild })
+  }
 
-
+  errorF = (errorB, errorM) => {
+    this.setState({
+      errorMessage: errorM,
+      error: errorB
+    })
+  }
 
   render() {
     return (
@@ -39,10 +54,10 @@ export default class App extends Component {
 
           <Container fluid>
             <Row className="justify-content-md-center">
-              <Col xs lg="6" className="mb-4 mt-4"><Prompt imagesF={this.imagesF}></Prompt></Col>
+              <Col xs lg="6" className="mb-4 mt-4"><Prompt imagesF={this.imagesF} loadingF={this.loadingF} errorF={this.errorF}> </Prompt></Col>
             </Row>
             <Row className="g-4 justify-content-md-center">
-              <Cards imagesL={this.state.promptData}></Cards>
+              <Cards imagesL={this.state.promptData} error={this.state.error} errorMessage={this.state.errorMessage} loading={this.state.loading}></Cards>
             </Row>
 
           </Container>

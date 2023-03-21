@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 import Col from 'react-bootstrap/Col';
@@ -20,31 +21,12 @@ export default class Cards extends Component {
             show: false,
             counter: 3
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.target = null
     }
 
     componentDidMount() {
-
     }
 
-    handleChange(event) {
-        this.setState({ value: event.target.value });
-    }
-
-    handleSubmit(event) {
-        this.newImages(this.state.value)
-        event.preventDefault();
-    }
-
-    async newImages(prompt) {
-        const newImages = await this.DallEClient.newImages();
-        this.setState({
-            imageURLs: newImages
-        });
-        console.log(this.state)
-    }
 
     componentDidUpdate(prevProps, prevState) {
     }
@@ -90,12 +72,19 @@ export default class Cards extends Component {
 
             )
         } else {
-            cards =
+            if(this.props.error){
+                cards = <Col xs lg="6" className="mb-4 mt-4"><Alert variant="danger">Error: {this.props.errorMessage}</Alert></Col>
+            }else if(this.props.loading){
+                cards = <Col md="auto" className="mb-4"><Spinner animation="grow" variant="primary" /></Col>
+            }else{
+                cards =
                 <Col md="auto">
                     <Alert key='primary' variant='primary'>
                         You can select a prompt option and enter your prompt text above to generate beautiful images based on your amazing ideas!
                     </Alert>
                 </Col>
+            }
+            
 
         }
 

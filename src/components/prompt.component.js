@@ -13,6 +13,7 @@ import Col from 'react-bootstrap/Col';
 import CardGroup from 'react-bootstrap/CardGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 
+
 export default class Prompt extends Component {
     DallEClient = new DallEClient();
     promptOption = new promptOption();
@@ -29,7 +30,9 @@ export default class Prompt extends Component {
             promptOptionList: [],
             promptSelected: false,
             size: 256,
-            sizes:[256,512,1024]
+            sizes: [256, 512, 1024],
+            error:false,
+            errorMessage:''
         };
         this.handleChangePrompt = this.handleChangePrompt.bind(this);
         this.handleChangeRange = this.handleChangeRange.bind(this);
@@ -57,11 +60,23 @@ export default class Prompt extends Component {
 
     async newImages(promptTxt, number) {
         if (this.state.promptSelected) {
+            this.props.loadingF(true)
             const newImages = await this.DallEClient.newImages(promptTxt, number, this.state.prompt, this.state.size);
-            this.setState({
-                imageURLs: newImages
-            });
-            this.props.imagesF(newImages)
+            if (newImages.error) {
+                this.setState({
+                    error: newImages.error,
+                    errorMessage:newImages.errorM
+                });
+                this.props.loadingF(newImages.loading)
+                this.props.errorF(newImages.error, newImages.errorM)
+            } else {
+                this.setState({
+                    imageURLs: newImages
+                });
+                this.props.imagesF(newImages.data)
+                this.props.loadingF(newImages.loading)
+            }
+
             console.log(this.state)
         } else {
             this.handleShowModal()
@@ -85,7 +100,7 @@ export default class Prompt extends Component {
 
     }
 
-    setSize(sizeval){
+    setSize(sizeval) {
         this.setState({ size: sizeval })
     }
 
@@ -144,9 +159,9 @@ export default class Prompt extends Component {
 
                                 <Dropdown.Menu>
                                     {Array.from(this.state.sizes).map((value) =>
-                                    <Dropdown.Item onClick={() => this.setSize(value)}>{value}px</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => this.setSize(value)}>{value}px</Dropdown.Item>
                                     )}
-                                    
+
                                 </Dropdown.Menu>
                             </Dropdown>
 
@@ -163,6 +178,8 @@ export default class Prompt extends Component {
                         </InputGroup>
 
                     </Form>
+
+
 
                     <Modal size="xl" class='bg-dark fade dark' show={this.state.showModal} onHide={this.handleCloseModal}>
                         <Modal.Header closeButton>

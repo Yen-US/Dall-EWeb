@@ -70,8 +70,7 @@ export default class Prompt extends Component {
                     'poptionL':this.state.prompt,
                     'size':this.state.size
                 },
-                method: 'GET',
-                body: JSON.stringify(data)
+                method: 'GET'
             }).then((response) => newImages = response.json())
             
             //const newImages = await this.DallEClient.newImages(promptTxt, number, this.state.prompt, this.state.size);
